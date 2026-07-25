@@ -1,6 +1,6 @@
-# Проект «{{projectTitle}}»
+# Проект «Киноман»
 
-* Студент: [{{userName}}]({{userProfile}}).
+* Студент: [Вадим Тюрюмин](https://htmlacademy.ru/profile/owlrik).
 * Наставник: `Неизвестно`.
 
 ---
