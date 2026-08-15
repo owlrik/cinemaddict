@@ -3,17 +3,21 @@ import { createFilmCardControlsTemplate } from './film-card-controls-template.js
 
 import { createElement } from '../render.js';
 
-const createFilmCardTemplate = () =>
+const createFilmCardTemplate = ({ filmInfo, comments }) =>
   `
     <article class="film-card">
-      ${createFilmCardInfoTemplate()}
+      ${createFilmCardInfoTemplate(filmInfo, comments.length)}
       ${createFilmCardControlsTemplate()}
     </article>
   `;
 
 class FilmCardView {
+  constructor({ film }) {
+    this.film = film;
+  }
+
   getTemplate() {
-    return createFilmCardTemplate();
+    return createFilmCardTemplate(this.film);
   }
 
   getElement() {
