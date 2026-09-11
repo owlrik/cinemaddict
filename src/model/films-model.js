@@ -1,10 +1,10 @@
 import { generateFilms } from '../mock/film.js';
 
 class FilmsModel {
-  films = generateFilms();
+  #films = generateFilms();
 
-  getFilms() {
-    return this.films;
+  get films() {
+    return this.#films;
   }
 }
 

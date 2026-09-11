@@ -9,33 +9,40 @@ import FilmDetailsView from '../view/film-details-view.js';
 import { render } from '../render.js';
 
 class FilmsPresenter {
-  filmsComponent = new FilmsView();
-  filmsListComponent = new FilmListView();
-  filmsListContainerComponent = new FilmListContainerView();
+  #container = null;
+  #filmsModel = null;
+  #commentsModel = null;
+
+  #filmsComponent = new FilmsView();
+  #filmsListComponent = new FilmListView();
+  #filmsListContainerComponent = new FilmListContainerView();
+
+  #films = [];
 
   constructor({ filmsContainer, filmsModel, commentsModel }) {
-    this.container = filmsContainer;
-    this.filmsModel = filmsModel;
-    this.commentsModel = commentsModel;
+    this.#container = filmsContainer;
+    this.#filmsModel = filmsModel;
+    this.#commentsModel = commentsModel;
   }
 
   init() {
-    this.films = [...this.filmsModel.getFilms()];
+    this.#films = [...this.#filmsModel.films];
 
-    render(new SortView(), this.container);
-    render(this.filmsComponent, this.container);
-    render(this.filmsListComponent, this.filmsComponent.getElement());
-    render(this.filmsListContainerComponent, this.filmsListComponent.getElement());
+    render(new SortView(), this.#container);
+    render(this.#filmsComponent, this.#container);
+    render(this.#filmsListComponent, this.#filmsComponent.element);
+    render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
-    for (let i = 0; i < this.films.length; i++) {
-      render(new FilmCardView({film: this.films[i]}), this.filmsListContainerComponent.getElement());
+    for (let i = 0; i < this.#films.length; i++) {
+      render(new FilmCardView({film: this.#films[i]}), this.#filmsListContainerComponent.element);
     }
 
-    render(new FilmShowMoreView(), this.filmsListComponent.getElement());
+    render(new FilmShowMoreView(), this.#filmsListComponent.element);
 
-    const comments = [...this.commentsModel.getComments(this.films[0])];
+    this.#commentsModel.filmComments = this.#films[0];
+    const comments = [...this.#commentsModel.filmComments];
 
-    render(new FilmDetailsView(this.films[0], comments), this.container.parentElement);
+    render(new FilmDetailsView(this.#films[0], comments), this.#container.parentElement);
   }
 }
 
