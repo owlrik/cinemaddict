@@ -25,6 +25,12 @@ class FilmsPresenter {
     this.#commentsModel = commentsModel;
   }
 
+  #renderFilmCard(film) {
+    const filmComponent = new FilmCardView({film});
+
+    render(filmComponent, this.#filmsListContainerComponent.element);
+  }
+
   init() {
     this.#films = [...this.#filmsModel.films];
 
@@ -34,7 +40,7 @@ class FilmsPresenter {
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
     for (let i = 0; i < this.#films.length; i++) {
-      render(new FilmCardView({film: this.#films[i]}), this.#filmsListContainerComponent.element);
+      this.#renderFilmCard(this.#films[i]);
     }
 
     render(new FilmShowMoreView(), this.#filmsListComponent.element);
