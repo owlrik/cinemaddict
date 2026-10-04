@@ -22,6 +22,8 @@ const getRandomPositiveFloat = (a, b, digits = 1) => {
 
 const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 const formatStringToDateWithTime = (date) =>
   new Date(date).toLocaleString('en-GB');
 
@@ -43,6 +45,7 @@ export {
   getRandomPositiveInteger,
   getRandomPositiveFloat,
   getRandomArrayElement,
+  isEscapeKey,
   formatStringToDateWithTime,
   formatStringToDate,
   formatStringToYear,
