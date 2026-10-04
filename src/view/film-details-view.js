@@ -34,14 +34,16 @@ const createFilmDetailsTemplate = ({ filmInfo }, comments) =>
 
 class FilmDetailsView {
   #element = null;
+  #film = null;
+  #comments = null;
 
   constructor(film, comments) {
-    this.film = film;
-    this.comments = comments;
+    this.#film = film;
+    this.#comments = comments;
   }
 
   get template() {
-    return createFilmDetailsTemplate(this.film, this.comments);
+    return createFilmDetailsTemplate(this.#film, this.#comments);
   }
 
   get element() {
