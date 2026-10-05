@@ -1,6 +1,7 @@
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
 import FilmListView from '../view/film-list-view.js';
+import FilmListEmptyView from '../view/film-list-empty-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
 import FilmCardView from '../view/film-card-view.js';
 import FilmShowMoreView from '../view/film-show-more-view.js';
@@ -34,6 +35,11 @@ class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmsModel.films];
+
+    if (this.#films.length === 0) {
+      render(new FilmListEmptyView(), this.#container);
+      return;
+    }
 
     render(new SortView(), this.#container);
     render(this.#filmsComponent, this.#container);
