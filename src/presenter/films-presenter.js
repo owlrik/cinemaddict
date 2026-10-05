@@ -10,6 +10,8 @@ import { render } from '../render.js';
 
 import { isEscapeKey } from '../utils.js';
 
+const FILM_COUNT_STEP = 5;
+
 class FilmsPresenter {
   #container = null;
   #filmsModel = null;
@@ -18,9 +20,11 @@ class FilmsPresenter {
   #filmsComponent = new FilmsView();
   #filmsListComponent = new FilmListView();
   #filmsListContainerComponent = new FilmListContainerView();
+  #filmShowMoreComponent = new FilmShowMoreView();
   #filmDetailsComponent = null;
 
   #films = [];
+  #renderedFilmCount = FILM_COUNT_STEP;
 
   constructor({ filmsContainer, filmsModel, commentsModel }) {
     this.#container = filmsContainer;
@@ -36,11 +40,13 @@ class FilmsPresenter {
     render(this.#filmsListComponent, this.#filmsComponent.element);
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
-    this.#films.forEach((film) => {
-      this.#renderFilm(film, this.#filmsListContainerComponent);
-    });
+    for (let i = 0; i < Math.min(this.#films.length, FILM_COUNT_STEP); i++) {
+      this.#renderFilm(this.#films[i], this.#filmsListContainerComponent);
+    }
 
-    render(new FilmShowMoreView(), this.#filmsListComponent.element);
+    if (this.#films.length > FILM_COUNT_STEP) {
+      this.#addFilmShowMoreComponent();
+    }
   };
 
   #renderFilm = (film, container) => {
@@ -81,6 +87,30 @@ class FilmsPresenter {
     this.#filmDetailsComponent.element.remove();
     this.#filmDetailsComponent = null;
     document.body.classList.remove('hide-overflow');
+  };
+
+  #addFilmShowMoreComponent = () => {
+    render(this.#filmShowMoreComponent, this.#filmsListComponent.element);
+
+    this.#filmShowMoreComponent.element.addEventListener('click', this.#onShowMoreButtonClick);
+  };
+
+  #removeFilmShowMoreComponent = () => {
+    this.#filmShowMoreComponent.element.remove();
+    this.#filmShowMoreComponent.removeElement();
+  };
+
+  #onShowMoreButtonClick = (evt) => {
+    evt.preventDefault();
+    this.#films
+      .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_STEP)
+      .forEach((film) => this.#renderFilm(film, this.#filmsListContainerComponent));
+
+    this.#renderedFilmCount += FILM_COUNT_STEP;
+
+    if (this.#renderedFilmCount >= this.#films.length) {
+      this.#removeFilmShowMoreComponent();
+    }
   };
 
   #onEscKeyDown = (evt) => {

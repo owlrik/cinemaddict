@@ -1,3 +1,3 @@
-const FILM_COUNT = 5;
+const FILM_COUNT = 42;
 
 export { FILM_COUNT };
