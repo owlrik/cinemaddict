@@ -36,6 +36,10 @@ class FilmsPresenter {
   init = () => {
     this.#films = [...this.#filmsModel.films];
 
+    this.#renderFilmBoard();
+  };
+
+  #renderFilmBoard = () => {
     if (this.#films.length === 0) {
       render(new FilmListEmptyView(), this.#container);
       return;
@@ -46,9 +50,9 @@ class FilmsPresenter {
     render(this.#filmsListComponent, this.#filmsComponent.element);
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
 
-    for (let i = 0; i < Math.min(this.#films.length, FILM_COUNT_STEP); i++) {
-      this.#renderFilm(this.#films[i], this.#filmsListContainerComponent);
-    }
+    this.#films
+      .slice(0, Math.min(this.#films.length, FILM_COUNT_STEP))
+      .forEach((film) => this.#renderFilm(film, this.#filmsListContainerComponent));
 
     if (this.#films.length > FILM_COUNT_STEP) {
       this.#addFilmShowMoreComponent();
