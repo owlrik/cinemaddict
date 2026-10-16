@@ -1,9 +1,9 @@
+import AbstractView from '../framework/view/abstract-view.js';
+
 import { createFilmDetailsInfoTemplate } from './film-details-info-template.js';
 import { createFilmDetailsControlsTemplate } from './film-details-controls-template.js';
 import { createFilmDetailsCommentsTemplate } from './film-details-comments-template.js';
 import { createFilmDetailsFormTemplate } from './film-details-form-template.js';
-
-import { createElement } from '../render.js';
 
 const createFilmDetailsTemplate = ({ filmInfo }, comments) =>
   `
@@ -32,30 +32,19 @@ const createFilmDetailsTemplate = ({ filmInfo }, comments) =>
     </section>
   `;
 
-class FilmDetailsView {
-  #element = null;
+class FilmDetailsView extends AbstractView {
   #film = null;
   #comments = null;
 
   constructor(film, comments) {
+    super();
+
     this.#film = film;
     this.#comments = comments;
   }
 
   get template() {
     return createFilmDetailsTemplate(this.#film, this.#comments);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
 

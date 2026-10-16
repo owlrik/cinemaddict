@@ -1,3 +1,5 @@
+import { render } from '../framework/render.js';
+
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
 import FilmListView from '../view/film-list-view.js';
@@ -6,8 +8,6 @@ import FilmListContainerView from '../view/film-list-container-view.js';
 import FilmCardView from '../view/film-card-view.js';
 import FilmShowMoreView from '../view/film-show-more-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
-
-import { render } from '../render.js';
 
 import { isEscapeKey } from '../utils.js';
 

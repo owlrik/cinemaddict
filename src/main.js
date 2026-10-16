@@ -1,11 +1,11 @@
+import { render } from './framework/render.js';
+
 import HeaderProfileView from './view/header-profile-view.js';
 import FilterView from './view/filter-view.js';
 import FooterStatisticsView from './view/footer-statistics-view.js';
 import FilmsPresenter from './presenter/films-presenter.js';
 import FilmsModel from './model/films-model.js';
 import CommentsModel from './model/comments-model.js';
-
-import { render } from './render.js';
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
