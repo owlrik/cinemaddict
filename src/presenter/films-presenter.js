@@ -62,10 +62,7 @@ class FilmsPresenter {
   #renderFilm = (film, container) => {
     const filmCardComponent = new FilmCardView({film});
 
-    const filmCardLinkElement = filmCardComponent.element.querySelector('.film-card__link');
-
-    filmCardLinkElement.addEventListener('click', (evt) => {
-      evt.preventDefault();
+    filmCardComponent.setCardClickHandler(() => {
       this.#addFilmDetailsComponent(film);
       document.addEventListener('keydown', this.#onEscKeyDown);
     });
@@ -78,9 +75,7 @@ class FilmsPresenter {
     const comments = [...this.#commentsModel.filmComments];
     this.#filmDetailsComponent = new FilmDetailsView(film, comments);
 
-    const filmDetailsCloseButtonElement = this.#filmDetailsComponent.element.querySelector('.film-details__close-btn');
-
-    filmDetailsCloseButtonElement.addEventListener('click', () => {
+    this.#filmDetailsComponent.setCloseButtonClickHandler(() => {
       this.#removeFilmDetailsComponent();
       document.removeEventListener('click', this.#onEscKeyDown);
     });
@@ -102,7 +97,7 @@ class FilmsPresenter {
   #addFilmShowMoreComponent = () => {
     render(this.#filmShowMoreComponent, this.#filmsListComponent.element);
 
-    this.#filmShowMoreComponent.element.addEventListener('click', this.#onShowMoreButtonClick);
+    this.#filmShowMoreComponent.setButtonClickHandler(() => this.#showMoreButtonClickHandler());
   };
 
   #removeFilmShowMoreComponent = () => {
@@ -110,8 +105,7 @@ class FilmsPresenter {
     this.#filmShowMoreComponent.removeElement();
   };
 
-  #onShowMoreButtonClick = (evt) => {
-    evt.preventDefault();
+  #showMoreButtonClickHandler = () => {
     this.#films
       .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_STEP)
       .forEach((film) => this.#renderFilm(film, this.#filmsListContainerComponent));

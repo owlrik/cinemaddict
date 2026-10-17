@@ -46,6 +46,20 @@ class FilmDetailsView extends AbstractView {
   get template() {
     return createFilmDetailsTemplate(this.#film, this.#comments);
   }
+
+  setCloseButtonClickHandler = (callback) => {
+    this._callback.closeButtonClick = callback;
+
+    const filmDetailsCloseButtonElement = this.element.querySelector('.film-details__close-btn');
+
+    filmDetailsCloseButtonElement.addEventListener('click', this.#closeButtonClickHandler);
+  };
+
+  #closeButtonClickHandler = (evt) => {
+    evt.preventDefault();
+
+    this._callback.closeButtonClick();
+  };
 }
 
 export default FilmDetailsView;
