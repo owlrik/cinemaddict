@@ -1,5 +1,3 @@
-import { getRandomPositiveInteger, getRandomArrayElement } from '../utils.js';
-
 import {
   DaysDuration,
   names,
@@ -7,6 +5,8 @@ import {
   emotions,
   comment,
 } from './const.js';
+
+import { getRandomArrayElement, getRandomPositiveInteger } from '../utils/common.js';
 
 const getDate = () => {
   const date = new Date();

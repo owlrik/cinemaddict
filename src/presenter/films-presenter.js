@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
@@ -9,7 +9,7 @@ import FilmCardView from '../view/film-card-view.js';
 import FilmShowMoreView from '../view/film-show-more-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
 
-import { isEscapeKey } from '../utils.js';
+import { isEscapeKey } from '../utils/common.js';
 
 const FILM_COUNT_STEP = 5;
 
@@ -89,8 +89,7 @@ class FilmsPresenter {
   };
 
   #removeFilmDetailsComponent = () => {
-    this.#filmDetailsComponent.element.remove();
-    this.#filmDetailsComponent = null;
+    remove(this.#filmDetailsComponent);
     document.body.classList.remove('hide-overflow');
   };
 
@@ -101,8 +100,7 @@ class FilmsPresenter {
   };
 
   #removeFilmShowMoreComponent = () => {
-    this.#filmShowMoreComponent.element.remove();
-    this.#filmShowMoreComponent.removeElement();
+    remove(this.#filmShowMoreComponent);
   };
 
   #showMoreButtonClickHandler = () => {

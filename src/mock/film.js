@@ -1,5 +1,3 @@
-import { getRandomPositiveInteger, getRandomArrayElement } from '../utils.js';
-
 import { FILM_COUNT } from '../const.js';
 
 import {
@@ -7,6 +5,8 @@ import {
   AgeRating, Runtime, YearsDuration, names, surnames,
   titles, posters, genres, description, countries,
 } from './const.js';
+
+import { getRandomArrayElement, getRandomPositiveInteger } from '../utils/common.js';
 
 const getDate = () => {
   const date = new Date();
