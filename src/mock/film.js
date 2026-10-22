@@ -2,18 +2,27 @@ import { FILM_COUNT } from '../const.js';
 
 import {
   NAME_COUNT, MAX_COMMENTS_ON_FILM, GenreCount, Rating,
-  AgeRating, Runtime, YearsDuration, names, surnames,
-  titles, posters, genres, description, countries,
+  AgeRating, Runtime, YearsDuration, DaysDuration, DateType,
+  names, surnames, titles, posters, genres, description, countries,
 } from './const.js';
 
 import { getRandomArrayElement, getRandomPositiveInteger } from '../utils/common.js';
 
-const getDate = () => {
+const getDate = (type) => {
   const date = new Date();
 
-  date.setFullYear(
-    date.getFullYear() - getRandomPositiveInteger(YearsDuration.MIN, YearsDuration.MAX)
-  );
+  switch (type) {
+    case DateType.FILM_INFO:
+      date.setFullYear(
+        date.getFullYear() - getRandomPositiveInteger(YearsDuration.MIN, YearsDuration.MAX)
+      );
+      break;
+    case DateType.USER_DETAILS:
+      date.setDate(
+        date.getDate() - getRandomPositiveInteger(DaysDuration.MIN, DaysDuration.MAX)
+      );
+      break;
+  }
 
   return date.toISOString();
 };
@@ -34,7 +43,7 @@ const generateFilm = () => ({
     () => `${getRandomArrayElement(names)} ${getRandomArrayElement(surnames)}`
   ),
   release: {
-    date: getDate(),
+    date: getDate(DateType.FILM_INFO),
     releaseCountry: getRandomArrayElement(countries)
   },
   runtime: getRandomPositiveInteger(Runtime.MIN, Runtime.MAX),
@@ -50,6 +59,8 @@ const generateFilms = () => {
 
   let totalCommentsCount = 0;
 
+  const getWatchingDate = () => getDate(DateType.USER_DETAILS);
+
   return films.map((film, index) => {
     const hasComments = getRandomPositiveInteger(0, 1);
 
@@ -59,6 +70,8 @@ const generateFilms = () => {
 
     totalCommentsCount += filmCommentsCount;
 
+    const alreadyWatched = Boolean(getRandomPositiveInteger(0, 1));
+
     return {
       id: String(index + 1),
       comments: (hasComments)
@@ -67,6 +80,12 @@ const generateFilms = () => {
         )
         : [],
       filmInfo: film,
+      userDetails: {
+        watchlist: Boolean(getRandomPositiveInteger(0, 1)),
+        alreadyWatched,
+        watchingDate: (alreadyWatched) ? getWatchingDate() : null,
+        favorite: Boolean(getRandomPositiveInteger(0, 1))
+      }
     };
   });
 };
