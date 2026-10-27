@@ -9,9 +9,9 @@ import FilmCardView from '../view/film-card-view.js';
 import FilmShowMoreView from '../view/film-show-more-view.js';
 import FilmDetailsView from '../view/film-details-view.js';
 
-import { isEscapeKey } from '../utils/common.js';
+import { FILM_COUNT_STEP } from '../const.js';
 
-const FILM_COUNT_STEP = 5;
+import { isEscapeKey } from '../utils/common.js';
 
 class FilmsPresenter {
   #container = null;
