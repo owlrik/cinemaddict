@@ -3,11 +3,11 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { createFilmCardInfoTemplate } from './film-card-info-template.js';
 import { createFilmCardControlsTemplate } from './film-card-controls-template.js';
 
-const createFilmCardTemplate = ({ filmInfo, comments }) =>
+const createFilmCardTemplate = ({ filmInfo, comments, userDetails }) =>
   `
     <article class="film-card">
       ${createFilmCardInfoTemplate(filmInfo, comments.length)}
-      ${createFilmCardControlsTemplate()}
+      ${createFilmCardControlsTemplate(userDetails)}
     </article>
   `;
 

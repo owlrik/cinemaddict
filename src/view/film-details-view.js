@@ -5,7 +5,7 @@ import { createFilmDetailsControlsTemplate } from './film-details-controls-templ
 import { createFilmDetailsCommentsTemplate } from './film-details-comments-template.js';
 import { createFilmDetailsFormTemplate } from './film-details-form-template.js';
 
-const createFilmDetailsTemplate = ({ filmInfo }, comments) =>
+const createFilmDetailsTemplate = ({ filmInfo, userDetails }, comments) =>
   `
     <section class="film-details">
       <div class="film-details__inner">
@@ -16,7 +16,7 @@ const createFilmDetailsTemplate = ({ filmInfo }, comments) =>
 
           ${createFilmDetailsInfoTemplate(filmInfo)}
 
-          ${createFilmDetailsControlsTemplate()}
+          ${createFilmDetailsControlsTemplate(userDetails)}
         </div>
 
         <div class="film-details__bottom-container">
