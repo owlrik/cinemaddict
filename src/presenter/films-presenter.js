@@ -1,13 +1,14 @@
 import { render, remove } from '../framework/render.js';
 
+import FilmPresenter from './film-presenter.js';
+import FilmDetailsPresenter from './film-details-presenter.js';
+
 import SortView from '../view/sort-view.js';
 import FilmsView from '../view/films-view.js';
 import FilmListView from '../view/film-list-view.js';
 import FilmListEmptyView from '../view/film-list-empty-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
-import FilmCardView from '../view/film-card-view.js';
 import FilmShowMoreView from '../view/film-show-more-view.js';
-import FilmDetailsView from '../view/film-details-view.js';
 
 import { FILM_COUNT_STEP } from '../const.js';
 
@@ -66,7 +67,7 @@ class FilmsPresenter {
     this.#renderFilms(
       0,
       Math.min(this.#films.length, FILM_COUNT_STEP),
-      this.#filmsListContainerComponent
+      this.#filmsListContainerComponent.element
     );
 
     if (this.#films.length > FILM_COUNT_STEP) {
@@ -81,27 +82,26 @@ class FilmsPresenter {
   };
 
   #renderFilm = (film, container) => {
-    const filmCardComponent = new FilmCardView({film});
+    const filmPresenter = new FilmPresenter(
+      container,
+      this.#addFilmDetailsComponent,
+      this.#onEscKeyDown
+    );
 
-    filmCardComponent.setCardClickHandler(() => {
-      this.#addFilmDetailsComponent(film);
-      document.addEventListener('keydown', this.#onEscKeyDown);
-    });
-
-    render(filmCardComponent, container.element);
+    filmPresenter.init(film);
   };
 
   #renderFilmDetails = (film) => {
     this.#commentsModel.filmComments = film;
     const comments = [...this.#commentsModel.filmComments];
-    this.#filmDetailsComponent = new FilmDetailsView(film, comments);
 
-    this.#filmDetailsComponent.setCloseButtonClickHandler(() => {
-      this.#removeFilmDetailsComponent();
-      document.removeEventListener('click', this.#onEscKeyDown);
-    });
+    const filmDetailsPresenter = new FilmDetailsPresenter(
+      this.#container.parentElement,
+      this.#removeFilmDetailsComponent,
+      this.#onEscKeyDown
+    );
 
-    render(this.#filmDetailsComponent, this.#container.parentElement);
+    filmDetailsPresenter.init(film, comments);
   };
 
   #renderNoTasks = () => {
