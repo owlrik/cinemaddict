@@ -27,6 +27,8 @@ class FilmsPresenter {
   #sortComponent = new SortView();
   #noTaskComponent = new FilmListEmptyView();
 
+  #filmPresenters = new Map();
+
   #films = [];
   #renderedFilmCount = FILM_COUNT_STEP;
 
@@ -89,6 +91,7 @@ class FilmsPresenter {
     );
 
     filmPresenter.init(film);
+    this.#filmPresenters.set(film.id, filmPresenter);
   };
 
   #renderFilmDetails = (film) => {
@@ -106,6 +109,14 @@ class FilmsPresenter {
 
   #renderNoTasks = () => {
     render(this.#noTaskComponent, this.#container);
+  };
+
+  #clearFilmList = () => {
+    this.#filmPresenters.forEach((presenter) => presenter.destroy());
+    this.#filmPresenters.clear();
+    this.#renderedFilmCount = FILM_COUNT_STEP;
+
+    remove(this.#filmShowMoreComponent);
   };
 
   #addFilmDetailsComponent = (film) => {
