@@ -23,6 +23,8 @@ class FilmsPresenter {
   #filmsListContainerComponent = new FilmListContainerView();
   #filmShowMoreComponent = new FilmShowMoreView();
   #filmDetailsComponent = null;
+  #sortComponent = new SortView();
+  #noTaskComponent = new FilmListEmptyView();
 
   #films = [];
   #renderedFilmCount = FILM_COUNT_STEP;
@@ -41,22 +43,41 @@ class FilmsPresenter {
 
   #renderFilmBoard = () => {
     if (this.#films.length === 0) {
-      render(new FilmListEmptyView(), this.#container);
+      this.#renderNoTasks();
       return;
     }
 
-    render(new SortView(), this.#container);
-    render(this.#filmsComponent, this.#container);
+    this.#renderSort(this.#container);
+    this.#renderFilmListContainer(this.#container);
+    this.#renderFilmList();
+  };
+
+  #renderSort = (container) => {
+    render(this.#sortComponent, container);
+  };
+
+  #renderFilmListContainer = (container) => {
+    render(this.#filmsComponent, container);
     render(this.#filmsListComponent, this.#filmsComponent.element);
     render(this.#filmsListContainerComponent, this.#filmsListComponent.element);
+  };
 
-    this.#films
-      .slice(0, Math.min(this.#films.length, FILM_COUNT_STEP))
-      .forEach((film) => this.#renderFilm(film, this.#filmsListContainerComponent));
+  #renderFilmList = () => {
+    this.#renderFilms(
+      0,
+      Math.min(this.#films.length, FILM_COUNT_STEP),
+      this.#filmsListContainerComponent
+    );
 
     if (this.#films.length > FILM_COUNT_STEP) {
       this.#addFilmShowMoreComponent();
     }
+  };
+
+  #renderFilms = (from, to, container) => {
+    this.#films
+      .slice(from, to)
+      .forEach((film) => this.#renderFilm(film, container));
   };
 
   #renderFilm = (film, container) => {
@@ -83,6 +104,10 @@ class FilmsPresenter {
     render(this.#filmDetailsComponent, this.#container.parentElement);
   };
 
+  #renderNoTasks = () => {
+    render(this.#noTaskComponent, this.#container);
+  };
+
   #addFilmDetailsComponent = (film) => {
     this.#renderFilmDetails(film);
     document.body.classList.add('hide-overflow');
@@ -104,9 +129,11 @@ class FilmsPresenter {
   };
 
   #showMoreButtonClickHandler = () => {
-    this.#films
-      .slice(this.#renderedFilmCount, this.#renderedFilmCount + FILM_COUNT_STEP)
-      .forEach((film) => this.#renderFilm(film, this.#filmsListContainerComponent));
+    this.#renderFilms(
+      this.#renderedFilmCount,
+      this.#renderedFilmCount + FILM_COUNT_STEP,
+      this.#filmsListContainerComponent
+    );
 
     this.#renderedFilmCount += FILM_COUNT_STEP;
 
