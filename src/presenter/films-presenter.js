@@ -12,7 +12,7 @@ import FilmShowMoreView from '../view/film-show-more-view.js';
 
 import { FILM_COUNT_STEP } from '../const.js';
 
-import { isEscapeKey } from '../utils/common.js';
+import { isEscapeKey, updateItem } from '../utils/common.js';
 
 class FilmsPresenter {
   #container = null;
@@ -137,6 +137,12 @@ class FilmsPresenter {
 
   #removeFilmShowMoreComponent = () => {
     remove(this.#filmShowMoreComponent);
+  };
+
+  #filmChangeHandler = (updatedFilm) => {
+    this.#films = updateItem(this.#films, updatedFilm);
+
+    this.#filmPresenters.get(updatedFilm.id).init(updatedFilm);
   };
 
   #showMoreButtonClickHandler = () => {
