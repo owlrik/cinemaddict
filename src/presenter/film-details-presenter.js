@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 
 import FilmDetailsView from '../view/film-details-view.js';
 
@@ -23,6 +23,8 @@ class FilmDetailsPresenter {
     this.#film = film;
     this.#comments = comments;
 
+    const prevFilmDetailsComponent = this.#filmDetailsComponent;
+
     this.#filmDetailsComponent = new FilmDetailsView(this.#film, this.#comments);
 
     this.#filmDetailsComponent.setCloseButtonClickHandler(() => {
@@ -30,7 +32,18 @@ class FilmDetailsPresenter {
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     });
 
-    render(this.#filmDetailsComponent, this.#container);
+    if (prevFilmDetailsComponent === null) {
+      render(this.#filmDetailsComponent, this.#container);
+      return;
+    }
+
+    replace(this.#filmDetailsComponent, prevFilmDetailsComponent);
+
+    remove(prevFilmDetailsComponent);
+  };
+
+  destroy = () => {
+    remove(this.#filmDetailsComponent);
   };
 }
 

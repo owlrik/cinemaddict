@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 
 import FilmCardView from '../view/film-card-view.js';
 
@@ -21,6 +21,8 @@ class FilmPresenter {
   init = (film) => {
     this.#film = film;
 
+    const prevFilmCardComponent = this.#filmCardComponent;
+
     this.#filmCardComponent = new FilmCardView({film: this.#film});
 
     this.#filmCardComponent.setCardClickHandler(() => {
@@ -28,7 +30,18 @@ class FilmPresenter {
       document.addEventListener('keydown', this.#escKeyDownHandler);
     });
 
-    render(this.#filmCardComponent, this.#container);
+    if (prevFilmCardComponent === null) {
+      render(this.#filmCardComponent, this.#container);
+      return;
+    }
+
+    replace(this.#filmCardComponent, prevFilmCardComponent);
+
+    remove(prevFilmCardComponent);
+  };
+
+  destroy = () => {
+    remove(this.#filmCardComponent);
   };
 }
 
