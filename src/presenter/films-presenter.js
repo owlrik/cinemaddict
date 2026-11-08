@@ -87,7 +87,8 @@ class FilmsPresenter {
     const filmPresenter = new FilmPresenter(
       container,
       this.#addFilmDetailsComponent,
-      this.#onEscKeyDown
+      this.#onEscKeyDown,
+      this.#filmChangeHandler
     );
 
     filmPresenter.init(film);
@@ -101,7 +102,8 @@ class FilmsPresenter {
     const filmDetailsPresenter = new FilmDetailsPresenter(
       this.#container.parentElement,
       this.#removeFilmDetailsComponent,
-      this.#onEscKeyDown
+      this.#onEscKeyDown,
+      this.#filmChangeHandler
     );
 
     filmDetailsPresenter.init(film, comments);

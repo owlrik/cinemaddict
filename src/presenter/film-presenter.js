@@ -11,11 +11,13 @@ class FilmPresenter {
 
   #clickCardHandler = null;
   #escKeyDownHandler = null;
+  #filmChangeHandler = null;
 
-  constructor(container, clickCardHandler, escKeyDownHandler) {
+  constructor(container, clickCardHandler, escKeyDownHandler, filmChangeHandler) {
     this.#container = container;
     this.#clickCardHandler = clickCardHandler;
     this.#escKeyDownHandler = escKeyDownHandler;
+    this.#filmChangeHandler = filmChangeHandler;
   }
 
   init = (film) => {
@@ -29,6 +31,9 @@ class FilmPresenter {
       this.#clickCardHandler(this.#film);
       document.addEventListener('keydown', this.#escKeyDownHandler);
     });
+    this.#filmCardComponent.setWatchlistButtonClickHandler(this.#watchlistButtonClickHandler);
+    this.#filmCardComponent.setWatchedButtonClickHandler(this.#watchedButtonClickHandler);
+    this.#filmCardComponent.setFavoriteClickHandler(this.#favoriteButtonClickHandler);
 
     if (prevFilmCardComponent === null) {
       render(this.#filmCardComponent, this.#container);
@@ -42,6 +47,36 @@ class FilmPresenter {
 
   destroy = () => {
     remove(this.#filmCardComponent);
+  };
+
+  #watchlistButtonClickHandler = () => {
+    this.#filmChangeHandler({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        watchlist: !this.#film.userDetails.watchlist
+      }
+    });
+  };
+
+  #watchedButtonClickHandler = () => {
+    this.#filmChangeHandler({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        alreadyWatched: !this.#film.userDetails.alreadyWatched
+      }
+    });
+  };
+
+  #favoriteButtonClickHandler = () => {
+    this.#filmChangeHandler({
+      ...this.#film,
+      userDetails: {
+        ...this.#film.userDetails,
+        favorite: !this.#film.userDetails.favorite
+      }
+    });
   };
 }
 
