@@ -9,15 +9,15 @@ class FilmPresenter {
 
   #film = null;
 
+  #filmChangeHandler = null;
   #clickCardHandler = null;
   #escKeyDownHandler = null;
-  #filmChangeHandler = null;
 
-  constructor(container, clickCardHandler, escKeyDownHandler, filmChangeHandler) {
+  constructor({ container, onDataChange, onShowDetails, onEscKeyDown }) {
     this.#container = container;
-    this.#clickCardHandler = clickCardHandler;
-    this.#escKeyDownHandler = escKeyDownHandler;
-    this.#filmChangeHandler = filmChangeHandler;
+    this.#filmChangeHandler = onDataChange;
+    this.#clickCardHandler = onShowDetails;
+    this.#escKeyDownHandler = onEscKeyDown;
   }
 
   init = (film) => {

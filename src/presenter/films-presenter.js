@@ -85,12 +85,12 @@ class FilmsPresenter {
   };
 
   #renderFilm = (film, container) => {
-    const filmPresenter = new FilmPresenter(
+    const filmPresenter = new FilmPresenter({
       container,
-      this.#addFilmDetailsComponent,
-      this.#onEscKeyDown,
-      this.#filmChangeHandler
-    );
+      onDataChange: this.#filmChangeHandler,
+      onShowDetails: this.#addFilmDetailsComponent,
+      onEscKeyDown: this.#onEscKeyDown
+    });
 
     filmPresenter.init(film);
     this.#filmPresenters.set(film.id, filmPresenter);
@@ -101,12 +101,12 @@ class FilmsPresenter {
     const comments = [...this.#commentsModel.filmComments];
 
     if (!this.#filmDetailsPresenter) {
-      this.#filmDetailsPresenter = new FilmDetailsPresenter(
-        this.#container.parentElement,
-        this.#removeFilmDetailsComponent,
-        this.#onEscKeyDown,
-        this.#filmChangeHandler
-      );
+      this.#filmDetailsPresenter = new FilmDetailsPresenter({
+        container: this.#container.parentElement,
+        onDataChange: this.#filmChangeHandler,
+        onHideDetails: this.#removeFilmDetailsComponent,
+        onEscKeyDown: this.#onEscKeyDown,
+      });
     }
 
     this.#filmDetailsPresenter.init(this.#selectedFilm, comments);
