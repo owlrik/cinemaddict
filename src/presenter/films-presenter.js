@@ -10,9 +10,10 @@ import FilmListEmptyView from '../view/film-list-empty-view.js';
 import FilmListContainerView from '../view/film-list-container-view.js';
 import FilmShowMoreView from '../view/film-show-more-view.js';
 
-import { FILM_COUNT_STEP } from '../const.js';
+import { FILM_COUNT_STEP, SortType } from '../const.js';
 
 import { isEscapeKey, updateItem } from '../utils/common.js';
+import { sortFilmsByDate, sortFilmsByRating } from '../utils/film.js';
 
 class FilmsPresenter {
   #container = null;
@@ -30,8 +31,10 @@ class FilmsPresenter {
   #filmDetailsPresenter = null;
 
   #films = [];
+  #sourcedFilms = [];
   #renderedFilmCount = FILM_COUNT_STEP;
   #selectedFilm = null;
+  #currentSortType = SortType.DEFAULT;
 
   constructor({ filmsContainer, filmsModel, commentsModel }) {
     this.#container = filmsContainer;
@@ -41,6 +44,7 @@ class FilmsPresenter {
 
   init = () => {
     this.#films = [...this.#filmsModel.films];
+    this.#sourcedFilms = [...this.#filmsModel.films];
 
     this.#renderFilmBoard();
   };
@@ -163,6 +167,7 @@ class FilmsPresenter {
 
   #filmChangeHandler = (updatedFilm) => {
     this.#films = updateItem(this.#films, updatedFilm);
+    this.#sourcedFilms = updateItem(this.#sourcedFilms, updatedFilm);
 
     this.#filmPresenters.get(updatedFilm.id).init(updatedFilm);
 
@@ -194,8 +199,28 @@ class FilmsPresenter {
     }
   };
 
+  #sortFilms = (sortType) => {
+    switch (sortType) {
+      case SortType.DATE:
+        this.#films.sort(sortFilmsByDate);
+        break;
+      case SortType.RATING:
+        this.#films.sort(sortFilmsByRating);
+        break;
+      default:
+        this.#films = [...this.#sourcedFilms];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
   #sortTypeChangeHandler = (sortType) => {
-    // - Сортируем фильмы
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortFilms(sortType);
+
     // - Очищаем список
     // - Рендерим список заново
   };
