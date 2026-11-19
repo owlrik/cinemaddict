@@ -23,11 +23,18 @@ const FilterType = {
   FAVORITES: 'favorites'
 };
 
+const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating'
+};
+
 export {
   FILM_COUNT,
   FILM_COUNT_STEP,
   FILTER_TYPE_ALL_NAME,
   UserStatusTitle,
   UserStatusValue,
-  FilterType
+  FilterType,
+  SortType
 };
