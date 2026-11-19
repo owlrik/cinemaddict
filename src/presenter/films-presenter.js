@@ -23,7 +23,7 @@ class FilmsPresenter {
   #filmsListComponent = new FilmListView();
   #filmsListContainerComponent = new FilmListContainerView();
   #filmShowMoreComponent = new FilmShowMoreView();
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #noTaskComponent = new FilmListEmptyView();
 
   #filmPresenters = new Map();
@@ -57,6 +57,10 @@ class FilmsPresenter {
   };
 
   #renderSort = (container) => {
+    this.#sortComponent = new SortView();
+
+    this.#sortComponent.setSortTypeChangeHandler(this.#sortTypeChangeHandler);
+
     render(this.#sortComponent, container);
   };
 
@@ -188,6 +192,12 @@ class FilmsPresenter {
       this.#removeFilmDetailsComponent();
       document.removeEventListener('keydown', this.#onEscKeyDown);
     }
+  };
+
+  #sortTypeChangeHandler = (sortType) => {
+    // - Сортируем фильмы
+    // - Очищаем список
+    // - Рендерим список заново
   };
 }
 
