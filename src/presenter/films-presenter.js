@@ -1,4 +1,4 @@
-import { render, remove } from '../framework/render.js';
+import { render, remove, replace } from '../framework/render.js';
 
 import FilmPresenter from './film-presenter.js';
 import FilmDetailsPresenter from './film-details-presenter.js';
@@ -61,11 +61,18 @@ class FilmsPresenter {
   };
 
   #renderSort = (container) => {
-    this.#sortComponent = new SortView();
+    const prevSortComponent = this.#sortComponent;
+
+    this.#sortComponent = new SortView(this.#currentSortType);
+
+    if (prevSortComponent === null) {
+      render(this.#sortComponent, container);
+    } else {
+      replace(this.#sortComponent, prevSortComponent);
+      remove(prevSortComponent);
+    }
 
     this.#sortComponent.setSortTypeChangeHandler(this.#sortTypeChangeHandler);
-
-    render(this.#sortComponent, container);
   };
 
   #renderFilmListContainer = (container) => {
@@ -220,9 +227,9 @@ class FilmsPresenter {
     }
 
     this.#sortFilms(sortType);
-
-    // - Очищаем список
-    // - Рендерим список заново
+    this.#clearFilmList();
+    this.#renderSort(this.#container);
+    this.#renderFilmList();
   };
 }
 
